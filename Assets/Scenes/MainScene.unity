@@ -159,8 +159,8 @@ Camera:
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.63310385, g: 0.6848269, b: 0.7484276, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -455,14 +455,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d81d53bb2d3a0c47a520f354f931c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HandInteraction: {fileID: 2701422307618553749}
   ForwardSpeed: 4
   LateralSpeed: 5
   TouchSensitivity: 0.001
   MinX: -3.5
   MaxX: 3.5
   OscillationDuration: 0.6
-  MinY: 0.5
-  MaxY: 1
+  MinY: 0
+  MaxY: -0.75
   OscillationCurve:
     serializedVersion: 2
     m_Curve:
@@ -702,6 +703,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2701422307618553747}
   - component: {fileID: 1539963911005491396}
+  - component: {fileID: 2701422307618553749}
+  - component: {fileID: 2701422307618553750}
+  - component: {fileID: 2701422307618553751}
   m_Layer: 0
   m_Name: sol_el
   m_TagString: Untagged
@@ -914,7 +918,7 @@ GameObject:
   - component: {fileID: 1334290163}
   m_Layer: 0
   m_Name: Hand
-  m_TagString: Untagged
+  m_TagString: Hand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1452,6 +1456,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 543450652399550746}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &2701422307618553749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171823527077687629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 050d4932adbcbb44e9694ae787643133, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &2701422307618553750
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171823527077687629}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.02471726
+  m_Height: 0.19302161
+  m_Direction: 1
+  m_Center: {x: 0.033968657, y: 0.10538443, z: 0.048451066}
+--- !u!54 &2701422307618553751
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 171823527077687629}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!4 &2765585576160678785
 Transform:
   m_ObjectHideFlags: 0

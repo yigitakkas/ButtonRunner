@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class HandMover : MonoBehaviour
 {
+    public HandInteraction HandInteraction;
+
     [Header("Movement Settings")]
     public float ForwardSpeed = 4f;
     public float LateralSpeed = 5f;
@@ -12,72 +14,58 @@ public class HandMover : MonoBehaviour
     [Header("Vertical Oscillation Settings")]
     public float OscillationDuration = 1f;
     public float MinY = 0.5f;
-    public float MaxY = 1f;  
+    public float MaxY = 1f;
 
     public AnimationCurve OscillationCurve;
 
-    private float _oscillationTimer = 0f; 
+    private float _oscillationTimer = 0f;
     private Vector2 _touchStartPosition;
+
+    private bool _isMovingDown = true;
 
     private void Update()
     {
-        MoveForward();
-        HandleInput();
+        HandleMovement();
         ApplyVerticalOscillation();
     }
 
-    private void MoveForward()
+    private void HandleMovement()
     {
-        transform.Translate(Vector3.forward * ForwardSpeed * Time.deltaTime);
-    }
+        Vector3 forwardMovement = Vector3.forward * ForwardSpeed * Time.deltaTime;
 
-    private void HandleInput()
-    {
-        if (Application.isMobilePlatform)
+        float lateralInput = Application.isMobilePlatform ? GetTouchInput() : GetKeyboardInput();
+        Vector3 lateralMovement = Vector3.right * lateralInput * LateralSpeed * Time.deltaTime;
+
+        Vector3 combinedMovement = forwardMovement + lateralMovement;
+        if (combinedMovement.magnitude > 0)
         {
-            HandleTouchInput();
+            combinedMovement = combinedMovement.normalized * ForwardSpeed * Time.deltaTime;
         }
-        else
-        {
-            HandleKeyboardInput();
-        }
-    }
 
-    private void HandleTouchInput()
-    {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-
-            switch (touch.phase)
-            {
-                case TouchPhase.Began:
-                    _touchStartPosition = touch.position;
-                    break;
-
-                case TouchPhase.Moved:
-                case TouchPhase.Stationary:
-                    float normalizedDeltaX = (touch.position.x - _touchStartPosition.x) / Screen.width;
-                    float moveX = normalizedDeltaX * LateralSpeed * TouchSensitivity;
-                    MoveLateral(moveX);
-                    break;
-            }
-        }
-    }
-
-    private void HandleKeyboardInput()
-    {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        MoveLateral(horizontalInput * LateralSpeed * Time.deltaTime);
-    }
-
-    private void MoveLateral(float amount)
-    {
-        transform.Translate(Vector3.right * amount);
+        transform.Translate(combinedMovement);
 
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, MinX, MaxX);
         transform.position = clampedPosition;
+    }
+
+    private float GetTouchInput()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+            {
+                float normalizedDeltaX = (touch.position.x - _touchStartPosition.x) / Screen.width;
+                return normalizedDeltaX * TouchSensitivity;
+            }
+        }
+        return 0f;
+    }
+
+    private float GetKeyboardInput()
+    {
+        return Input.GetAxis("Horizontal");
     }
 
     private void ApplyVerticalOscillation()
@@ -94,5 +82,18 @@ public class HandMover : MonoBehaviour
         Vector3 position = transform.position;
         position.y = newY;
         transform.position = position;
+
+        if (curveValue > 0.5f)
+        {
+            if (!_isMovingDown)
+            {
+                _isMovingDown = true;
+                HandInteraction.AllowPress(); 
+            }
+        }
+        else
+        {
+            _isMovingDown = false;
+        }
     }
 }
