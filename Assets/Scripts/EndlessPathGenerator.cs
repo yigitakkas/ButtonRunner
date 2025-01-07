@@ -7,7 +7,7 @@ public class OptimizedButtonGrid : MonoBehaviour
     public GameObject ButtonPrefab;
     public Transform CameraTransform;
     [Range(1, 20)] public int Columns = 7; 
-    [Range(0, 20)] public int ExtraRows = 5; 
+    [Range(0, 30)] public int ExtraRows = 30; 
     public float HorizontalSpacing = 1.1f; 
     public float VerticalSpacing = 1.1f; 
 
@@ -66,7 +66,7 @@ public class OptimizedButtonGrid : MonoBehaviour
             Vector3 spawnPosition = new Vector3(xPosition, -1, _spawnZ);
 
             // Yeni butonu oluþtur
-            GameObject newButton = Instantiate(ButtonPrefab, spawnPosition, Quaternion.identity);
+            GameObject newButton = Instantiate(ButtonPrefab, spawnPosition, ButtonPrefab.transform.rotation);
             newButton.transform.SetParent(transform);
             newRow[x] = newButton;
         }

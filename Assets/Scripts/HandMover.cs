@@ -1,20 +1,29 @@
 using UnityEngine;
 
-public class CapsuleMover : MonoBehaviour
+public class HandMover : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float ForwardSpeed = 4f;
     public float LateralSpeed = 5f;
     public float TouchSensitivity = 0.001f;
-    public float MinX = -3.7f;
-    public float MaxX = 3.7f;
+    public float MinX = -3.5f;
+    public float MaxX = 3.5f;
 
+    [Header("Vertical Oscillation Settings")]
+    public float OscillationDuration = 1f;
+    public float MinY = 0.5f;
+    public float MaxY = 1f;  
+
+    public AnimationCurve OscillationCurve;
+
+    private float _oscillationTimer = 0f; 
     private Vector2 _touchStartPosition;
 
     private void Update()
     {
         MoveForward();
         HandleInput();
+        ApplyVerticalOscillation();
     }
 
     private void MoveForward()
@@ -48,12 +57,8 @@ public class CapsuleMover : MonoBehaviour
 
                 case TouchPhase.Moved:
                 case TouchPhase.Stationary:
-                    // Hareket miktarýný ekran geniþliðine göre normalize et
                     float normalizedDeltaX = (touch.position.x - _touchStartPosition.x) / Screen.width;
-
-                    // Hareketi hassasiyete ve hýz katsayýsýna göre uygula
                     float moveX = normalizedDeltaX * LateralSpeed * TouchSensitivity;
-
                     MoveLateral(moveX);
                     break;
             }
@@ -73,5 +78,21 @@ public class CapsuleMover : MonoBehaviour
         Vector3 clampedPosition = transform.position;
         clampedPosition.x = Mathf.Clamp(clampedPosition.x, MinX, MaxX);
         transform.position = clampedPosition;
+    }
+
+    private void ApplyVerticalOscillation()
+    {
+        _oscillationTimer += Time.deltaTime / OscillationDuration;
+        if (_oscillationTimer > 1f)
+        {
+            _oscillationTimer = 0f;
+        }
+
+        float curveValue = OscillationCurve.Evaluate(_oscillationTimer);
+        float newY = Mathf.Lerp(MinY, MaxY, curveValue);
+
+        Vector3 position = transform.position;
+        position.y = newY;
+        transform.position = position;
     }
 }
