@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameObject EndGameUI;
     private bool _isGameCompleted = false;
+    [SerializeField] private HandMover _handMover;
 
     private void Awake()
     {
@@ -38,10 +39,10 @@ public class GameManager : MonoBehaviour
 
     private void StopPlayerMovement()
     {
-        HandMover handMover = FindObjectOfType<HandMover>();
-        if (handMover != null)
+        if (_handMover != null)
         {
-            handMover.enabled = false;
+            Debug.Log("handmover is not null");
+            _handMover.enabled = false;
         }
     }
 

@@ -11,6 +11,10 @@ public class TapToPlayManager : MonoBehaviour
     private void Start()
     {
         HandMover.enabled = false;
+        if (TapToPlayUI == null)
+        {
+            StartGame();
+        }
     }
 
     private void Update()
@@ -25,8 +29,11 @@ public class TapToPlayManager : MonoBehaviour
     {
         _isGameStarted = true;
 
-        TapToPlayUI.GetComponent<Animator>().enabled = false;
-        TapToPlayUI.SetActive(false);
+        if(TapToPlayUI!=null)
+        {
+            TapToPlayUI.GetComponent<Animator>().enabled = false;
+            TapToPlayUI.SetActive(false);
+        }
 
         HandMover.enabled = true;
     }

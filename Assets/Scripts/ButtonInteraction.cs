@@ -85,6 +85,9 @@ public class ButtonInteraction : MonoBehaviour
 
     public void ResetColor()
     {
-        _meshRenderer.material.color = _originalColor;
+        if(_meshRenderer!=null)
+        {
+            _meshRenderer.material.color = _originalColor;
+        }
     }
 }
