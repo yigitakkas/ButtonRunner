@@ -11,6 +11,8 @@ public class GateInteraction : MonoBehaviour
     public SpriteRenderer Effector;
     public TMP_Text ValueText;
 
+    private bool _isTriggered = false;
+
     private void Awake()
     {
         if(Value > 0)
@@ -28,6 +30,9 @@ public class GateInteraction : MonoBehaviour
 
     public void ApplyGateEffect(HandMover handMover)
     {
+        if (_isTriggered) return;
+
+        _isTriggered = true;
         Headline.color = Color.gray;
         Effector.color = Color.gray;
 
