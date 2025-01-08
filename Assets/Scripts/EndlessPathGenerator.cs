@@ -1,19 +1,25 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class OptimizedButtonGrid : MonoBehaviour
+public class EndlessPathGenerator : MonoBehaviour
 {
     [Header("Button Grid Settings")]
     public GameObject ButtonPrefab;
+    public GameObject FinishPrefab;
     public Transform CameraTransform;
-    [Range(1, 20)] public int Columns = 7; 
-    [Range(0, 30)] public int ExtraRows = 30; 
-    public float HorizontalSpacing = 1.1f; 
-    public float VerticalSpacing = 1.1f; 
+    [Range(1, 20)] public int Columns = 7;
+    [Range(0, 30)] public int ExtraRows = 30;
+    public float HorizontalSpacing = 1.1f;
+    public float VerticalSpacing = 1.1f;
 
-    private Queue<GameObject[]> _rows; 
+    [Header("Level Settings")]
+    public int MaxRows = 100; 
+
+    private Queue<GameObject[]> _rows;
     private int _rowsOnScreen;
     private float _spawnZ;
+    private int _currentRowCount = 0; 
+    private bool _finishPlaced = false; 
 
     private void Start()
     {
@@ -48,24 +54,34 @@ public class OptimizedButtonGrid : MonoBehaviour
     /// Kamera pozisyonuna göre satýr geri dönüþümü yapar.
     private void CheckAndRecycleRows()
     {
+        if (_finishPlaced) return; // Finish çizgisi yerleþtirildiyse devam etmeyin
+
         if (CameraTransform.position.z > _spawnZ - (_rowsOnScreen * VerticalSpacing))
         {
-            RecycleRow();
+            if (_currentRowCount < MaxRows)
+            {
+                RecycleRow();
+            }
+            else if (!_finishPlaced)
+            {
+                PlaceFinishLine(); // Finish çizgisini yerleþtir
+                _finishPlaced = true;
+            }
         }
     }
 
     /// Yeni bir satýr oluþturur.
     private void SpawnRow()
     {
+        if (_currentRowCount >= MaxRows) return;
+
         GameObject[] newRow = new GameObject[Columns];
 
         for (int x = 0; x < Columns; x++)
         {
-            // Satýrdaki butonun pozisyonunu hesapla
             float xPosition = x * HorizontalSpacing - (Columns - 1) * HorizontalSpacing / 2;
             Vector3 spawnPosition = new Vector3(xPosition, -1, _spawnZ);
 
-            // Yeni butonu oluþtur
             GameObject newButton = Instantiate(ButtonPrefab, spawnPosition, ButtonPrefab.transform.rotation);
             newButton.transform.SetParent(transform);
             newRow[x] = newButton;
@@ -73,6 +89,7 @@ public class OptimizedButtonGrid : MonoBehaviour
 
         _rows.Enqueue(newRow);
         _spawnZ += VerticalSpacing;
+        _currentRowCount++;
     }
 
     /// En eski satýrý geri dönüþtürerek sona taþýr.
@@ -104,5 +121,13 @@ public class OptimizedButtonGrid : MonoBehaviour
 
         _rows.Enqueue(oldRow);
         _spawnZ += VerticalSpacing;
+        _currentRowCount++;
+    }
+
+    /// Finish çizgisini yerleþtirir.
+    private void PlaceFinishLine()
+    {
+        Vector3 finishPosition = new Vector3(0, -0.99f, _spawnZ);
+        Instantiate(FinishPrefab, finishPosition, FinishPrefab.transform.rotation, transform);
     }
 }

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class HandInteraction : MonoBehaviour
 {
-    private bool _canPress = true; // Tekrar tekrar buton basmayý engellemek için
-    private GateInteraction _currentGate; // Geçilen kapýyý takip eder
+    private bool _canPress = true; 
+    private GateInteraction _currentGate;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,14 +21,15 @@ public class HandInteraction : MonoBehaviour
 
         if (other.CompareTag("Gate"))
         {
-            if (_currentGate != null) return; // Zaten bir kapýnýn içindeyse tekrar iþlem yapma
+            if (_currentGate != null) return;
 
             GateInteraction gate = other.GetComponent<GateInteraction>();
             if (gate != null)
             {
-                _currentGate = gate; // Geçilen kapýyý kaydet
+                _currentGate = gate;
             }
         }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -38,14 +39,26 @@ public class HandInteraction : MonoBehaviour
             HandMover handMover = GetComponentInParent<HandMover>();
             if (handMover != null)
             {
-                _currentGate.ApplyGateEffect(handMover); // Kapý etkisini uygula
-                _currentGate = null; // Kapý etkisi tamamlandýktan sonra sýfýrla
+                _currentGate.ApplyGateEffect(handMover);
+                _currentGate = null;
             }
+        }
+
+        if (other.CompareTag("FinishLine"))
+        {
+            HandleFinish();
         }
     }
 
     public void AllowPress()
     {
         _canPress = true;
+    }
+
+    private void HandleFinish()
+    {
+        Debug.Log("Finish line reached!");
+
+        GameManager.Instance?.OnLevelComplete();
     }
 }
