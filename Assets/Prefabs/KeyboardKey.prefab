@@ -378,6 +378,9 @@ MonoBehaviour:
   ButtonText: {fileID: 4757744045967661956}
   PressDepth: 0.15
   AnimationSpeed: 6
+  ClickSound: {fileID: 8300000, guid: 16ce8efe5bbd6334fbc1a9c0a56e59db, type: 3}
+  ClickEffectPrefab: {fileID: 9147781452344396570, guid: 3f147d3789450f942b49e22aa8c035da,
+    type: 3}
 --- !u!4 &1886701842215834292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 29e81f1380c2c214389ad66fdb00146f,

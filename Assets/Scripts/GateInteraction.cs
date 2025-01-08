@@ -13,9 +13,14 @@ public class GateInteraction : MonoBehaviour
 
     private bool _isTriggered = false;
 
+    public AudioClip GateSound;
+    private AudioSource _audioSource;
+    public GameObject GateEffectPrefab;
+
     private void Awake()
     {
-        if(Value > 0)
+        _audioSource = gameObject.AddComponent<AudioSource>();
+        if (Value > 0)
         {
             Headline.color = Color.green;
             Effector.color = Color.green;
@@ -31,6 +36,8 @@ public class GateInteraction : MonoBehaviour
     public void ApplyGateEffect(HandMover handMover)
     {
         if (_isTriggered) return;
+
+        ApplyGateFX();
 
         _isTriggered = true;
         Headline.color = Color.gray;
@@ -53,5 +60,17 @@ public class GateInteraction : MonoBehaviour
 
 
         Debug.Log($"{gateType} Gate triggered with value: {Value}");
+    }
+
+    public void ApplyGateFX()
+    {
+        if (GateSound != null)
+        {
+            _audioSource.PlayOneShot(GateSound);
+        }
+        if (GateEffectPrefab != null)
+        {
+            Instantiate(GateEffectPrefab, transform.position, Quaternion.identity);
+        }
     }
 }

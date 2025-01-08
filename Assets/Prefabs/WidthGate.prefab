@@ -885,6 +885,9 @@ MonoBehaviour:
   Headline: {fileID: 3681238401428150760}
   Effector: {fileID: 6712161355110370792}
   ValueText: {fileID: 3213097249101752714}
+  GateSound: {fileID: 8300000, guid: 16826ebe7859e2d4e999966f07b2efa2, type: 3}
+  GateEffectPrefab: {fileID: 7871666761018092911, guid: aa43b20dabfbedf49b5ae676c657fed0,
+    type: 3}
 --- !u!65 &2784332623383205343
 BoxCollider:
   m_ObjectHideFlags: 0

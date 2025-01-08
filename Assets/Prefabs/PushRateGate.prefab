@@ -538,10 +538,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gateType: 0
-  Value: 5
+  Value: 1
   Headline: {fileID: 1164373150824542245}
   Effector: {fileID: 3971158198409399373}
   ValueText: {fileID: 3633889116447133602}
+  GateSound: {fileID: 8300000, guid: 16826ebe7859e2d4e999966f07b2efa2, type: 3}
+  GateEffectPrefab: {fileID: 7871666761018092911, guid: aa43b20dabfbedf49b5ae676c657fed0,
+    type: 3}
 --- !u!65 &3300405457958524055
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 59522946427199523}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.37, y: 0.57, z: 0}
+  m_LocalPosition: {x: -1.48, y: 0.5, z: 0}
   m_LocalScale: {x: 0.5, y: 3, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -617,6 +617,9 @@ MonoBehaviour:
   Headline: {fileID: 7217274020105920729}
   Effector: {fileID: 1173347163830784136}
   ValueText: {fileID: 7481115559164725646}
+  GateSound: {fileID: 8300000, guid: 16826ebe7859e2d4e999966f07b2efa2, type: 3}
+  GateEffectPrefab: {fileID: 7871666761018092911, guid: aa43b20dabfbedf49b5ae676c657fed0,
+    type: 3}
 --- !u!65 &7026913571964639738
 BoxCollider:
   m_ObjectHideFlags: 0
