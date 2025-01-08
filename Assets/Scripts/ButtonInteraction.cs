@@ -4,16 +4,14 @@ using TMPro;
 
 public class ButtonInteraction : MonoBehaviour
 {
-    private bool _isPressed = false;
     private Vector3 _originalPosition;
     private int _amount = 0;
-    private MeshRenderer _meshRenderer; // MeshRenderer referansý
+    private MeshRenderer _meshRenderer;
     private Color _originalColor;
 
     public TMP_Text ButtonText;
-    public float PressDepth = 0.2f;
-    public float AnimationSpeed = 5f;
-
+    public float PressDepth = 0.15f;
+    public float AnimationSpeed = 6f;
 
     private void Start()
     {
@@ -24,16 +22,11 @@ public class ButtonInteraction : MonoBehaviour
 
     public void PressButton()
     {
-        //if (_isPressed) return;
-
-        //_isPressed = true;
-
         _amount++;
         ButtonText.text = _amount.ToString();
 
         ChangeToGreen();
 
-        StopAllCoroutines();
         StartCoroutine(AnimatePress());
     }
 
@@ -53,8 +46,6 @@ public class ButtonInteraction : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, _originalPosition, AnimationSpeed * Time.deltaTime);
             yield return null;
         }
-
-        _isPressed = false;
     }
 
     public void UpdateOriginalPosition(Vector3 newPosition)

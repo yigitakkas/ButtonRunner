@@ -88,11 +88,17 @@ public class OptimizedButtonGrid : MonoBehaviour
             {
                 Vector3 newPosition = button.transform.position;
                 newPosition.z = _spawnZ;
+
                 button.transform.position = newPosition;
+
                 ButtonInteraction buttonInteraction = button.GetComponent<ButtonInteraction>();
-                buttonInteraction.UpdateOriginalPosition(newPosition);
-                buttonInteraction.ResetText();
-                buttonInteraction.ResetColor();
+                if (buttonInteraction != null)
+                {
+                    buttonInteraction.StopAllCoroutines();
+                    buttonInteraction.UpdateOriginalPosition(newPosition);
+                    buttonInteraction.ResetText();
+                    buttonInteraction.ResetColor();
+                }
             }
         }
 

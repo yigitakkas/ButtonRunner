@@ -776,7 +776,6 @@ GameObject:
   - component: {fileID: 1518988670}
   - component: {fileID: 1518988669}
   - component: {fileID: 1518988668}
-  - component: {fileID: 1518988667}
   - component: {fileID: 1518988671}
   m_Layer: 0
   m_Name: Plane
@@ -785,28 +784,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &1518988667
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1518988666}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1518988668
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1197,6 +1174,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PushRateGate
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561381632497546408, guid: 5b11217d8e4bb9f4e94193377748177b,
+        type: 3}
+      propertyPath: Value
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1899,9 +1881,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.02471726
-  m_Height: 0.19302161
+  m_Height: 0.21562354
   m_Direction: 1
-  m_Center: {x: 0.033968657, y: 0.10538443, z: 0.048451066}
+  m_Center: {x: 0.033968657, y: 0.094083466, z: 0.048451066}
 --- !u!54 &2701422307618553751
 Rigidbody:
   m_ObjectHideFlags: 0

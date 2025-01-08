@@ -361,8 +361,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.46080565, y: 0.4924338, z: 0.2916165}
-  m_Center: {x: -0.0030721426, y: 0.007360387, z: -4.1928912e-17}
+  m_Size: {x: 0.46080565, y: 0.4924338, z: 0.33758205}
+  m_Center: {x: -0.0030721426, y: 0.0073603876, z: 0.022983689}
 --- !u!114 &-7096669976085780377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,8 +376,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonText: {fileID: 4757744045967661956}
-  PressDepth: 0.2
-  AnimationSpeed: 5
+  PressDepth: 0.15
+  AnimationSpeed: 6
 --- !u!4 &1886701842215834292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 29e81f1380c2c214389ad66fdb00146f,
