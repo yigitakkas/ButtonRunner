@@ -6,7 +6,7 @@ public class HandMover : MonoBehaviour
     [Header("Movement Settings")]
     public float ForwardSpeed = 4f;
     public float LateralSpeed = 5f;
-    public float TouchSensitivity = 0.001f;
+    public float TouchSensitivity = 30f;
     public float MinX = -3.5f;
     public float MaxX = 3.5f;
 
@@ -34,6 +34,15 @@ public class HandMover : MonoBehaviour
     private Queue<GameObject> _handPool = new Queue<GameObject>();
     private float _oscillationTimer = 0f;
     private bool _isMovingDown = true;
+    private Vector2 _touchStartPosition;
+    private float _currentVelocity;
+
+    private float _currentXPosition;
+
+    private Vector2 _previousTouchPosition;
+    private bool _isTouching;
+
+    private float _targetX = 0f;
 
     private void Start()
     {
@@ -48,25 +57,52 @@ public class HandMover : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector3 forwardMovement = Vector3.forward * ForwardSpeed * Time.deltaTime;
-        float lateralInput = GetInput();
-        Vector3 lateralMovement = Vector3.right * lateralInput * LateralSpeed * Time.deltaTime;
+        float threshold = 0.01f;
 
-        transform.Translate(forwardMovement + lateralMovement);
-
-        Vector3 clampedPosition = transform.position;
-        clampedPosition.x = Mathf.Clamp(clampedPosition.x, MinX, MaxX);
-        transform.position = clampedPosition;
-    }
-
-    private float GetInput()
-    {
         if (Application.isMobilePlatform && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            return (touch.position.x - Screen.width / 2f) / Screen.width * TouchSensitivity;
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                _previousTouchPosition = touch.position;
+            }
+            else if (touch.phase == TouchPhase.Moved)
+            {
+                Vector2 delta = touch.position - _previousTouchPosition;
+                _previousTouchPosition = touch.position;
+
+                float normalizedDeltaX = delta.x / Screen.width;
+
+                if (Mathf.Abs(normalizedDeltaX) > threshold)
+                {
+                    _targetX = Mathf.Clamp(
+                        _targetX + normalizedDeltaX * TouchSensitivity,
+                        MinX,
+                        MaxX
+                    );
+                }
+            }
         }
-        return Input.GetAxis("Horizontal");
+        else
+        {
+            float lateralInput = Input.GetAxis("Horizontal");
+
+            if (Mathf.Abs(lateralInput) > threshold)
+            {
+                _targetX = Mathf.Clamp(
+                    _targetX + lateralInput * LateralSpeed * Time.deltaTime,
+                    MinX,
+                    MaxX
+                );
+            }
+        }
+
+        Vector3 forwardMovement = Vector3.forward * ForwardSpeed * Time.deltaTime;
+
+        float smoothedX = Mathf.SmoothDamp(transform.position.x, _targetX, ref _currentVelocity, 0.1f);
+
+        transform.position = new Vector3(smoothedX, transform.position.y, transform.position.z) + forwardMovement;
     }
 
     private void ApplyVerticalOscillation()
