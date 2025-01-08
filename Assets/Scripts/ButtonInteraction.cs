@@ -24,9 +24,9 @@ public class ButtonInteraction : MonoBehaviour
 
     public void PressButton()
     {
-        if (_isPressed) return;
+        //if (_isPressed) return;
 
-        _isPressed = true;
+        //_isPressed = true;
 
         _amount++;
         ButtonText.text = _amount.ToString();

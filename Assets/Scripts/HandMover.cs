@@ -12,15 +12,22 @@ public class HandMover : MonoBehaviour
     public float MaxX = 3.5f;
 
     [Header("Vertical Oscillation Settings")]
-    public float OscillationDuration = 1f;
-    public float MinY = 0.5f;
-    public float MaxY = 1f;
+    public float OscillationDuration = 1f; //
+    public float MinY = 0f;
+    public float MaxY = -0.75f;
 
     public AnimationCurve OscillationCurve;
 
+    [Header("Dynamic Attributes")]
+    public int Width = 1;
+    public int Height = 1;
+
+    private const float MinOscillationDuration = 0.02f;
+    private const int MaxWidth = 5;
+    private const int MaxHeight = 5;
+
     private float _oscillationTimer = 0f;
     private Vector2 _touchStartPosition;
-
     private bool _isMovingDown = true;
 
     private void Update()
@@ -88,12 +95,43 @@ public class HandMover : MonoBehaviour
             if (!_isMovingDown)
             {
                 _isMovingDown = true;
-                HandInteraction.AllowPress(); 
+                HandInteraction.AllowPress();
             }
         }
         else
         {
             _isMovingDown = false;
         }
+    }
+
+    // Yeni özellik artýrma/azaltma metodlarý
+    public void ModifyPushRate(int value)
+    {
+        OscillationDuration = Mathf.Max(MinOscillationDuration, OscillationDuration - value * 0.1f); // Basma süresini dinamik olarak düzenle
+        Debug.Log($"Oscillation Duration modified to: {OscillationDuration}");
+    }
+
+    public void ModifyWidth(int value)
+    {
+        Width = Mathf.Clamp(Width + value, 1, MaxWidth); // El geniþliðini artýr/azalt, sýnýrla
+        Debug.Log($"Width modified to: {Width}");
+        UpdateWidth();
+    }
+
+    public void ModifyHeight(int value)
+    {
+        Height = Mathf.Clamp(Height + value, 1, MaxHeight); // El yüksekliðini artýr/azalt, sýnýrla
+        Debug.Log($"Height modified to: {Height}");
+        UpdateHeight();
+    }
+
+    private void UpdateWidth()
+    {
+        Debug.Log("Width updated!");
+    }
+
+    private void UpdateHeight()
+    {
+        Debug.Log("Height updated!");
     }
 }
