@@ -15,11 +15,14 @@ public class ButtonInteraction : MonoBehaviour
 
     public AudioClip ClickSound;
 
-    private void Start()
+    private void Awake()
     {
         _originalPosition = transform.position;
         _meshRenderer = GetComponent<MeshRenderer>();
         _originalColor = _meshRenderer.material.color;
+    }
+    private void Start()
+    {
     }
 
     public void PressButton()

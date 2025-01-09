@@ -361,8 +361,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.46080565, y: 0.47214317, z: 0.36888587}
-  m_Center: {x: 0, y: -7.44977e-17, z: 0.011612303}
+  m_Size: {x: 0.5085066, y: 0.41976577, z: 0.31932184}
+  m_Center: {x: -0.003623581, y: 0.0009994745, z: -0.013169337}
 --- !u!114 &-7096669976085780377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,8 +379,6 @@ MonoBehaviour:
   PressDepth: 0.15
   AnimationSpeed: 6
   ClickSound: {fileID: 8300000, guid: 16ce8efe5bbd6334fbc1a9c0a56e59db, type: 3}
-  ClickEffectPrefab: {fileID: 9147781452344396570, guid: 3f147d3789450f942b49e22aa8c035da,
-    type: 3}
 --- !u!4 &1886701842215834292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 29e81f1380c2c214389ad66fdb00146f,

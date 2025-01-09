@@ -48,6 +48,11 @@ public class HandMover : MonoBehaviour
     private void Update()
     {
         HandleMovement();
+    }
+
+    private void FixedUpdate()
+    {
+        AdjustOscillationDepth();
         ApplyVerticalOscillation();
     }
 
@@ -90,10 +95,26 @@ public class HandMover : MonoBehaviour
         transform.position = new Vector3(smoothedX, transform.position.y, transform.position.z) + forwardMovement;
     }
 
+    private void AdjustOscillationDepth()
+    {
+        float depthThreshold = 0.1f;
+        if (Mathf.Abs(MaxY - MinY) < depthThreshold)
+        {
+            MaxY = MinY - depthThreshold; 
+        }
+    }
+
     private void ApplyVerticalOscillation()
     {
-        _oscillationTimer = (_oscillationTimer + Time.deltaTime / OscillationDuration) % 1f;
+        _oscillationTimer += Time.fixedDeltaTime / OscillationDuration;
+
+        if (_oscillationTimer >= 1f)
+        {
+            _oscillationTimer = 0f;
+        }
+
         float curveValue = OscillationCurve.Evaluate(_oscillationTimer);
+
         float newY = Mathf.Lerp(MinY, MaxY, curveValue);
 
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
@@ -108,6 +129,8 @@ public class HandMover : MonoBehaviour
             _isMovingDown = false;
         }
     }
+
+
 
     private void AllowHandPress()
     {

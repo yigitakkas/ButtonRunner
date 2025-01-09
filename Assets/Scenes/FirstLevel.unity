@@ -1111,7 +1111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 500984525}
   Offset: {x: 0, y: 10, z: -10}
-  SmoothSpeed: 0.5
+  SmoothSpeed: 0.75
   FixedRotationX: 40
 --- !u!1 &334538963
 GameObject:
@@ -1363,9 +1363,9 @@ MonoBehaviour:
   TouchSensitivity: 20
   MinX: -3.5
   MaxX: 3.5
-  OscillationDuration: 0.55
-  MinY: 0
-  MaxY: -0.75
+  OscillationDuration: 0.6
+  MinY: -0.6
+  MaxY: 0
   OscillationCurve:
     serializedVersion: 2
     m_Curve:
