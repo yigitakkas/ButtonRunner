@@ -13,13 +13,15 @@ public class EndlessPathGenerator : MonoBehaviour
     public float VerticalSpacing = 1.1f;
 
     [Header("Level Settings")]
-    public int MaxRows = 100; 
+    public int MaxRows = 100;
 
-    private Queue<GameObject[]> _rows;
+    private Queue<GameObject[]> _rows = new Queue<GameObject[]>();
     private int _rowsOnScreen;
     private float _spawnZ;
-    private int _currentRowCount = 0; 
-    private bool _finishPlaced = false; 
+    private int _currentRowCount = 0;
+    private bool _finishPlaced = false;
+
+    private const float ButtonHeight = -0.99f;
 
     private void Start()
     {
@@ -29,20 +31,19 @@ public class EndlessPathGenerator : MonoBehaviour
 
     private void Update()
     {
-        CheckAndRecycleRows();
+        if (!_finishPlaced)
+        {
+            CheckAndRecycleRows();
+        }
     }
 
     private void InitializeGrid()
     {
-        _rows = new Queue<GameObject[]>();
-
         float cameraViewDistance = CameraTransform.GetComponent<Camera>().fieldOfView / 2f;
         _rowsOnScreen = Mathf.CeilToInt(cameraViewDistance / VerticalSpacing) + ExtraRows;
-
         _spawnZ = CameraTransform.position.z;
     }
 
-    /// Ýlk satýrlarý oluþturur.
     private void SpawnInitialRows()
     {
         for (int i = 0; i < _rowsOnScreen; i++)
@@ -51,39 +52,33 @@ public class EndlessPathGenerator : MonoBehaviour
         }
     }
 
-    /// Kamera pozisyonuna göre satýr geri dönüþümü yapar.
     private void CheckAndRecycleRows()
     {
-        if (_finishPlaced) return;
-
         if (CameraTransform.position.z > _spawnZ - (_rowsOnScreen * VerticalSpacing))
         {
             if (_currentRowCount < MaxRows)
             {
                 RecycleRow();
             }
-            else if (!_finishPlaced)
+            else
             {
-                PlaceFinishLine(); 
+                PlaceFinishLine();
                 _finishPlaced = true;
             }
         }
     }
 
-    /// Yeni bir satýr oluþturur.
     private void SpawnRow()
     {
         if (_currentRowCount >= MaxRows) return;
 
         GameObject[] newRow = new GameObject[Columns];
-
         for (int x = 0; x < Columns; x++)
         {
             float xPosition = x * HorizontalSpacing - (Columns - 1) * HorizontalSpacing / 2;
-            Vector3 spawnPosition = new Vector3(xPosition, -1, _spawnZ);
+            Vector3 spawnPosition = new Vector3(xPosition, ButtonHeight, _spawnZ);
 
-            GameObject newButton = Instantiate(ButtonPrefab, spawnPosition, ButtonPrefab.transform.rotation);
-            newButton.transform.SetParent(transform);
+            GameObject newButton = Instantiate(ButtonPrefab, spawnPosition, ButtonPrefab.transform.rotation, transform);
             newRow[x] = newButton;
         }
 
@@ -92,13 +87,11 @@ public class EndlessPathGenerator : MonoBehaviour
         _currentRowCount++;
     }
 
-    /// En eski satýrý geri dönüþtürerek sona taþýr.
     private void RecycleRow()
     {
         if (_rows.Count == 0) return;
 
         GameObject[] oldRow = _rows.Dequeue();
-
         foreach (GameObject button in oldRow)
         {
             if (button != null)
@@ -124,10 +117,9 @@ public class EndlessPathGenerator : MonoBehaviour
         _currentRowCount++;
     }
 
-    /// Finish çizgisini yerleþtirir.
     private void PlaceFinishLine()
     {
-        Vector3 finishPosition = new Vector3(0, -0.99f, _spawnZ);
+        Vector3 finishPosition = new Vector3(0, ButtonHeight, _spawnZ);
         Instantiate(FinishPrefab, finishPosition, FinishPrefab.transform.rotation, transform);
     }
 }

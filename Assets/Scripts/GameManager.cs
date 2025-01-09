@@ -1,14 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    [Header("UI Elements")]
     public GameObject EndGameUI;
+
+    [Header("Level Settings")]
+    [SerializeField] private string firstLevelSceneName = "FirstLevel";
+
     private bool _isGameCompleted = false;
-    [SerializeField] private HandMover _handMover;
 
     private void Awake()
     {
@@ -30,18 +34,23 @@ public class GameManager : MonoBehaviour
         Debug.Log("Level Complete! Stopping player movement and showing end screen.");
 
         StopPlayerMovement();
-
-        if (EndGameUI != null)
-        {
-            EndGameUI.SetActive(true);
-        }
+        NotifyUI();
     }
 
     private void StopPlayerMovement()
     {
-        if (_handMover != null)
+        HandMover handMover = FindObjectOfType<HandMover>();
+        if (handMover != null)
         {
-            _handMover.enabled = false;
+            handMover.StopMovement();
+        }
+    }
+
+    private void NotifyUI()
+    {
+        if (EndGameUI != null)
+        {
+            EndGameUI.SetActive(true);
         }
     }
 
@@ -56,7 +65,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("FirstLevel");
+            SceneManager.LoadScene(firstLevelSceneName);
         }
     }
 }

@@ -7,34 +7,59 @@ public class HandInteraction : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Button"))
-        {
-            if (!_canPress) return;
-
-            ButtonInteraction button = other.GetComponent<ButtonInteraction>();
-            if (button != null)
-            {
-                button.PressButton();
-                _canPress = false;
-            }
-        }
-
-        if (other.CompareTag("Gate"))
-        {
-            if (_currentGate != null) return;
-
-            GateInteraction gate = other.GetComponent<GateInteraction>();
-            if (gate != null)
-            {
-                _currentGate = gate;
-            }
-        }
-
+        HandleCollision(other, false);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Gate") && _currentGate != null)
+        HandleCollision(other, true);
+    }
+
+    private void HandleCollision(Collider other, bool isExiting)
+    {
+        switch (other.tag)
+        {
+            case "Button":
+                if (!isExiting) HandleButtonInteraction(other);
+                break;
+
+            case "Gate":
+                if (isExiting) HandleGateExit(other);
+                else HandleGateEnter(other);
+                break;
+
+            case "FinishLine":
+                if (isExiting) HandleFinish();
+                break;
+        }
+    }
+
+    private void HandleButtonInteraction(Collider other)
+    {
+        if (!_canPress) return;
+
+        ButtonInteraction button = other.GetComponent<ButtonInteraction>();
+        if (button != null)
+        {
+            button.PressButton();
+            _canPress = false;
+        }
+    }
+
+    private void HandleGateEnter(Collider other)
+    {
+        if (_currentGate != null) return;
+
+        GateInteraction gate = other.GetComponent<GateInteraction>();
+        if (gate != null)
+        {
+            _currentGate = gate;
+        }
+    }
+
+    private void HandleGateExit(Collider other)
+    {
+        if (_currentGate != null)
         {
             HandMover handMover = GetComponentInParent<HandMover>();
             if (handMover != null)
@@ -43,11 +68,12 @@ public class HandInteraction : MonoBehaviour
                 _currentGate = null;
             }
         }
+    }
+    private void HandleFinish()
+    {
+        Debug.Log("Finish line reached!");
 
-        if (other.CompareTag("FinishLine"))
-        {
-            HandleFinish();
-        }
+        GameManager.Instance?.OnLevelComplete();
     }
 
     public void AllowPress()
@@ -55,10 +81,4 @@ public class HandInteraction : MonoBehaviour
         _canPress = true;
     }
 
-    private void HandleFinish()
-    {
-        Debug.Log("Finish line reached!");
-
-        GameManager.Instance?.OnLevelComplete();
-    }
 }

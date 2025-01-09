@@ -305,7 +305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Target: {fileID: 500984525}
   Offset: {x: 0, y: 10, z: -10}
-  SmoothSpeed: 0.75
+  SmoothSpeed: 0.5
   FixedRotationX: 40
 --- !u!1 &495477495
 GameObject:
@@ -1107,6 +1107,8 @@ MonoBehaviour:
     type: 3}
   AudioSource: {fileID: 1323299165}
   EffectContainer: {fileID: 282165550}
+  GateEffectPoolSize: 10
+  ButtonEffectPoolSize: 75
 --- !u!4 &1323299167
 Transform:
   m_ObjectHideFlags: 0
@@ -1423,7 +1425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EndGameUI: {fileID: 923676513}
-  _handMover: {fileID: 500984524}
+  firstLevelSceneName: FirstLevel
 --- !u!4 &1791524723
 Transform:
   m_ObjectHideFlags: 0

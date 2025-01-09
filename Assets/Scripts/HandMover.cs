@@ -29,18 +29,14 @@ public class HandMover : MonoBehaviour
     private const int MaxWidth = 5;
     private const int MaxHeight = 5;
     private const float MinOscillationDuration = 0.02f;
+    private const float SmoothDampTime = 0.1f;
 
     private List<GameObject> _hands = new List<GameObject>();
     private Queue<GameObject> _handPool = new Queue<GameObject>();
     private float _oscillationTimer = 0f;
     private bool _isMovingDown = true;
-    private Vector2 _touchStartPosition;
-    private float _currentVelocity;
-
-    private float _currentXPosition;
-
     private Vector2 _previousTouchPosition;
-    private bool _isTouching;
+    private float _currentVelocity;
 
     private float _targetX = 0f;
 
@@ -57,51 +53,40 @@ public class HandMover : MonoBehaviour
 
     private void HandleMovement()
     {
-        float threshold = 0.01f;
+        ProcessInput();
+        MovePlayer();
+    }
 
+    private void ProcessInput()
+    {
         if (Application.isMobilePlatform && Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-
             if (touch.phase == TouchPhase.Began)
             {
                 _previousTouchPosition = touch.position;
             }
             else if (touch.phase == TouchPhase.Moved)
             {
-                Vector2 delta = touch.position - _previousTouchPosition;
+                float deltaX = (touch.position.x - _previousTouchPosition.x) / Screen.width;
+                _targetX = Mathf.Clamp(_targetX + deltaX * TouchSensitivity, MinX, MaxX);
                 _previousTouchPosition = touch.position;
-
-                float normalizedDeltaX = delta.x / Screen.width;
-
-                if (Mathf.Abs(normalizedDeltaX) > threshold)
-                {
-                    _targetX = Mathf.Clamp(
-                        _targetX + normalizedDeltaX * TouchSensitivity,
-                        MinX,
-                        MaxX
-                    );
-                }
             }
         }
         else
         {
             float lateralInput = Input.GetAxis("Horizontal");
-
-            if (Mathf.Abs(lateralInput) > threshold)
+            if (Mathf.Abs(lateralInput) > 0.01f)
             {
-                _targetX = Mathf.Clamp(
-                    _targetX + lateralInput * LateralSpeed * Time.deltaTime,
-                    MinX,
-                    MaxX
-                );
+                _targetX = Mathf.Clamp(_targetX + lateralInput * LateralSpeed * Time.deltaTime, MinX, MaxX);
             }
         }
+    }
 
+    private void MovePlayer()
+    {
         Vector3 forwardMovement = Vector3.forward * ForwardSpeed * Time.deltaTime;
-
-        float smoothedX = Mathf.SmoothDamp(transform.position.x, _targetX, ref _currentVelocity, 0.1f);
-
+        float smoothedX = Mathf.SmoothDamp(transform.position.x, _targetX, ref _currentVelocity, SmoothDampTime);
         transform.position = new Vector3(smoothedX, transform.position.y, transform.position.z) + forwardMovement;
     }
 
@@ -200,5 +185,10 @@ public class HandMover : MonoBehaviour
         float xOffset = (column - (Width - 1) / 2f) * HorizontalSpacing;
         float zOffset = row * VerticalSpacing;
         return new Vector3(xOffset, 0, zOffset);
+    }
+
+    public void StopMovement()
+    {
+        enabled = false;
     }
 }

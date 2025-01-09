@@ -8,8 +8,9 @@ public class PlaneFollower : MonoBehaviour
 
     private void Update()
     {
-        Vector3 targetPosition = new Vector3(transform.position.x, transform.position.y, CameraTransform.position.z + OffsetZ);
+        if (CameraTransform == null) return;
 
+        Vector3 targetPosition = new Vector3(transform.position.x, transform.position.y, CameraTransform.position.z + OffsetZ);
         transform.position = Vector3.Lerp(transform.position, targetPosition, FollowSpeed * Time.deltaTime);
     }
 }

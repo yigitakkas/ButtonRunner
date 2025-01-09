@@ -16,6 +16,10 @@ public class EffectManager : MonoBehaviour
     [Header("Effect Containers")]
     public Transform EffectContainer;
 
+    [Header("Pooling Settings")]
+    public int GateEffectPoolSize = 10;
+    public int ButtonEffectPoolSize = 75;
+
     private Queue<GameObject> _gateEffectPool = new Queue<GameObject>();
     private Queue<GameObject> _buttonEffectPool = new Queue<GameObject>();
 
@@ -24,6 +28,11 @@ public class EffectManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            if (EffectContainer == null)
+            {
+                EffectContainer = new GameObject("EffectContainer").transform;
+                DontDestroyOnLoad(EffectContainer.gameObject);
+            }
             InitializePools();
         }
         else
@@ -36,7 +45,7 @@ public class EffectManager : MonoBehaviour
     {
         if (GateEffectPrefab != null)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < GateEffectPoolSize; i++)
             {
                 GameObject effect = Instantiate(GateEffectPrefab, EffectContainer);
                 effect.SetActive(false);
@@ -46,7 +55,7 @@ public class EffectManager : MonoBehaviour
 
         if (ButtonEffectPrefab != null)
         {
-            for (int i = 0; i < 75; i++)
+            for (int i = 0; i < ButtonEffectPoolSize; i++)
             {
                 GameObject effect = Instantiate(ButtonEffectPrefab, EffectContainer);
                 effect.SetActive(false);

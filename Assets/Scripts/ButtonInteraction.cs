@@ -24,12 +24,7 @@ public class ButtonInteraction : MonoBehaviour
 
     public void PressButton()
     {
-        if (ClickSound != null)
-        {
-            EffectManager.Instance.PlaySound(ClickSound);
-        }
-
-        EffectManager.Instance.PlayButtonEffect(transform.position);
+        TriggerEffects();
 
         _amount++;
         ButtonText.text = _amount.ToString();
@@ -37,6 +32,16 @@ public class ButtonInteraction : MonoBehaviour
         ChangeToGreen();
 
         StartCoroutine(AnimatePress());
+    }
+
+    private void TriggerEffects()
+    {
+        if (ClickSound != null)
+        {
+            EffectManager.Instance.PlaySound(ClickSound);
+        }
+
+        EffectManager.Instance.PlayButtonEffect(transform.position);
     }
 
     private IEnumerator AnimatePress()
