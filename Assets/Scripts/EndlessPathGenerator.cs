@@ -54,7 +54,7 @@ public class EndlessPathGenerator : MonoBehaviour
     /// Kamera pozisyonuna göre satýr geri dönüþümü yapar.
     private void CheckAndRecycleRows()
     {
-        if (_finishPlaced) return; // Finish çizgisi yerleþtirildiyse devam etmeyin
+        if (_finishPlaced) return;
 
         if (CameraTransform.position.z > _spawnZ - (_rowsOnScreen * VerticalSpacing))
         {
@@ -64,7 +64,7 @@ public class EndlessPathGenerator : MonoBehaviour
             }
             else if (!_finishPlaced)
             {
-                PlaceFinishLine(); // Finish çizgisini yerleþtir
+                PlaceFinishLine(); 
                 _finishPlaced = true;
             }
         }

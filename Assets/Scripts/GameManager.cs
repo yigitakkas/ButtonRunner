@@ -41,7 +41,6 @@ public class GameManager : MonoBehaviour
     {
         if (_handMover != null)
         {
-            Debug.Log("handmover is not null");
             _handMover.enabled = false;
         }
     }
@@ -53,11 +52,11 @@ public class GameManager : MonoBehaviour
 
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
-            SceneManager.LoadScene(nextSceneIndex); // Bir sonraki sahneyi yükle
+            SceneManager.LoadScene(nextSceneIndex);
         }
         else
         {
-            SceneManager.LoadScene("FirstLevel"); //Ýlk bölüm
+            SceneManager.LoadScene("FirstLevel");
         }
     }
 }

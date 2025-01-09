@@ -14,18 +14,17 @@ public class GateInteraction : MonoBehaviour
     private bool _isTriggered = false;
 
     public AudioClip GateSound;
-    private AudioSource _audioSource;
     public GameObject GateEffectPrefab;
 
     private void Awake()
     {
-        _audioSource = gameObject.AddComponent<AudioSource>();
         if (Value > 0)
         {
             Headline.color = Color.green;
             Effector.color = Color.green;
             ValueText.text = "+" + Value.ToString();
-        } else
+        }
+        else
         {
             Headline.color = Color.red;
             Effector.color = Color.red;
@@ -58,19 +57,19 @@ public class GateInteraction : MonoBehaviour
                 break;
         }
 
-
         Debug.Log($"{gateType} Gate triggered with value: {Value}");
     }
 
-    public void ApplyGateFX()
+    private void ApplyGateFX()
     {
         if (GateSound != null)
         {
-            _audioSource.PlayOneShot(GateSound);
+            EffectManager.Instance.PlaySound(GateSound);
         }
+
         if (GateEffectPrefab != null)
         {
-            Instantiate(GateEffectPrefab, transform.position, Quaternion.identity);
+            EffectManager.Instance.PlayGateEffect(transform.position);
         }
     }
 }

@@ -14,28 +14,22 @@ public class ButtonInteraction : MonoBehaviour
     public float AnimationSpeed = 6f;
 
     public AudioClip ClickSound;
-    private AudioSource _audioSource;
-
-    public GameObject ClickEffectPrefab;
 
     private void Start()
     {
         _originalPosition = transform.position;
         _meshRenderer = GetComponent<MeshRenderer>();
         _originalColor = _meshRenderer.material.color;
-        _audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void PressButton()
     {
         if (ClickSound != null)
         {
-            _audioSource.PlayOneShot(ClickSound);
+            EffectManager.Instance.PlaySound(ClickSound);
         }
-        if (ClickEffectPrefab != null)
-        {
-            Instantiate(ClickEffectPrefab, transform.position, Quaternion.identity);
-        }
+
+        EffectManager.Instance.PlayButtonEffect(transform.position);
 
         _amount++;
         ButtonText.text = _amount.ToString();
@@ -85,7 +79,7 @@ public class ButtonInteraction : MonoBehaviour
 
     public void ResetColor()
     {
-        if(_meshRenderer!=null)
+        if (_meshRenderer != null)
         {
             _meshRenderer.material.color = _originalColor;
         }
